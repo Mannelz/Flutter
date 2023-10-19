@@ -34,6 +34,7 @@ class HomePage extends StatelessWidget
       appBar: AppBar
       (
         title: const Text("Column & Row Nested"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
       ),
 
