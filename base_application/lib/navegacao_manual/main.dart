@@ -1,4 +1,3 @@
-import 'package:base_application/util/grid_area.dart';
 import 'package:flutter/material.dart';
 
 main() => runApp(const MyApp());
@@ -15,8 +14,7 @@ class MyApp extends StatelessWidget
       debugShowCheckedModeBanner: false,
       theme: ThemeData
       (
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        useMaterial3: true,
+        primaryColor: Colors.blue,
       ),
       home: const HomePage(),
     );
@@ -34,18 +32,13 @@ class HomePage extends StatelessWidget
     (
       appBar: AppBar
       (
-        title: const Text("Expanded"),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text("Layout Modelo"),
         centerTitle: true,
       ),
 
-      body: const Row
+      body: const Center
       (
-        children: 
-        [
-          GridArea(color: Colors.blue, flex: 3, text: "Texto 1 Texto 1 Texto 1 Texto 1",),
-          GridArea(color: Colors.green, flex: 7, text: "Texto 2 Texto 2 Texto 2 Texto 2",)
-        ],
+        child: Text("Comece aqui!"),
       ),
     );
   }
