@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart';
 
 main() => runApp(const MyApp());
 
@@ -17,29 +18,6 @@ class MyApp extends StatelessWidget
         primaryColor: Colors.blue,
       ),
       home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget 
-{
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) 
-  {
-    return Scaffold
-    (
-      appBar: AppBar
-      (
-        title: const Text("Layout Modelo"),
-        centerTitle: true,
-      ),
-
-      body: const Center
-      (
-        child: Text("Comece aqui!"),
-      ),
     );
   }
 }
