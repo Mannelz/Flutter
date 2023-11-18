@@ -1,34 +1,20 @@
+import 'package:base_application/forms/pessoa.dart';
+import 'package:base_application/forms/routes.dart';
 import 'package:base_application/forms/validation.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-
-main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget
-{
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context)
-  {
-    return MaterialApp
-    (
-      debugShowCheckedModeBanner: false,
-      theme: FlexThemeData.light(scheme: FlexScheme.mandyRed),
-      // The Mandy red, dark theme.
-      darkTheme: FlexThemeData.dark(scheme: FlexScheme.mandyRed),
-      // Use dark or light theme based on system setting.
-      themeMode: ThemeMode.system,
-      home: CadastroPage(),
-    );
-  }
-}
 
 class CadastroPage extends StatelessWidget 
 {
   CadastroPage({super.key});
+
   final _formKey = GlobalKey<FormState>();
   final Validation validar = Validation();
+  final Pessoa usuario = Pessoa();
+
+  final fieldNome = TextEditingController();
+  final fieldSobrenome = TextEditingController();
+  final fieldEmail = TextEditingController();
+  final fieldSenha = TextEditingController(); 
 
   @override
   Widget build(BuildContext context) 
@@ -37,7 +23,7 @@ class CadastroPage extends StatelessWidget
     (
       appBar: AppBar
       (
-        title: const Text("Layout Modelo"),
+        title: const Text("Cadastro"),
         centerTitle: true,
       ),
 
@@ -49,7 +35,7 @@ class CadastroPage extends StatelessWidget
 
           child: Container
           (
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
         
             child: Column
             (
@@ -60,10 +46,16 @@ class CadastroPage extends StatelessWidget
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
                   autofocus: true,
+                  controller: fieldNome,
 
                   validator: (nome) => validar.campoNome(nome.toString()),
 
-                  decoration: InputDecoration
+                  onSaved: (String? value)
+                  {
+                    usuario.nome = value;
+                  },
+
+                  decoration: const InputDecoration
                   (
                     labelText: "Nome",
                     hintText: "Entre com seu nome",
@@ -71,16 +63,22 @@ class CadastroPage extends StatelessWidget
                   ),
                 ),
         
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
         
                 TextFormField
                 (
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
+                  controller: fieldSobrenome,
                   
                   validator: (sobrenome) => validar.campoSobreNome(sobrenome.toString()),
 
-                  decoration: InputDecoration
+                  onSaved: (String? value)
+                  {
+                    usuario.sobrenome = value;
+                  },
+
+                  decoration: const InputDecoration
                   (
                     labelText: "Sobrenome",
                     hintText: "Entre com seu sobrenome",
@@ -88,16 +86,22 @@ class CadastroPage extends StatelessWidget
                   ),
                 ),
         
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
         
                 TextFormField
                 (
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
+                  controller: fieldEmail,
 
                   validator: (email) => validar.campoEmail(email.toString()),
 
-                  decoration: InputDecoration
+                  onSaved: (String? value)
+                  {
+                    usuario.email = value;
+                  },
+
+                  decoration: const InputDecoration
                   (
                     labelText: "Email",
                     hintText: "Entre com seu email",
@@ -105,13 +109,14 @@ class CadastroPage extends StatelessWidget
                   ),
                 ),
         
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
         
                 TextFormField
                 (
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.number,
                   obscureText: true,
+                  controller: fieldSenha,
 
                   onFieldSubmitted: (value)
                   {
@@ -120,7 +125,12 @@ class CadastroPage extends StatelessWidget
 
                   validator: (senha) => validar.campoSenha(senha.toString()),
 
-                  decoration: InputDecoration
+                  onSaved: (String? value)
+                  {
+                    usuario.senha = value;
+                  },
+
+                  decoration: const InputDecoration
                   (
                     labelText: "Senha",
                     hintText: "Entre com sua senha",
@@ -128,7 +138,7 @@ class CadastroPage extends StatelessWidget
                   ),
                 ),
         
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
 
                 SizedBox
                 (
@@ -137,17 +147,17 @@ class CadastroPage extends StatelessWidget
         
                   child: ElevatedButton
                   (
-                    child: Text('Cadastrar'), 
                     style: ElevatedButton.styleFrom
                     (
                       backgroundColor: Colors.green,
-                      textStyle: TextStyle
+                      textStyle: const TextStyle
                       (
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       )
                     ),
                     onPressed:() {_onSubmit(context);},
+                    child: const Text('Cadastrar'),
                   ),
                 ),
               ],
@@ -161,7 +171,13 @@ class CadastroPage extends StatelessWidget
   void _onSubmit(inContext)
   {
     if (_formKey.currentState!.validate())
+    {
       print('Formulário Validado!');
+
+      _formKey.currentState!.save();
+      clearFields();
+      Navigator.of(inContext).pushNamed(Routes.PAGINA_DADOS, arguments:usuario);
+    }
     else
     {
       print('Formulário com Erros.');
@@ -177,15 +193,15 @@ class CadastroPage extends StatelessWidget
             onWillPop: () async => false,
             child: AlertDialog
             (
-              title: Text('Dados Inválidos!'),
+              title: const Text('Dados Inválidos!'),
               actions: 
               [
                 TextButton(
-                  onPressed: (){Navigator.pop(inContext);}, child: Text('Cancelar'),
+                  onPressed: (){Navigator.pop(inContext);}, child: const Text('Cancelar'),
                 ),
                 
                 TextButton(
-                  onPressed: (){Navigator.pop(inContext);}, child: Text('OK'),
+                  onPressed: (){Navigator.pop(inContext);}, child: const Text('OK'),
                 ),
               ],
             ),
@@ -193,5 +209,13 @@ class CadastroPage extends StatelessWidget
         }
       );
     }
+  }
+
+  void clearFields() 
+  {
+    fieldNome.clear();
+    fieldSobrenome.clear();
+    fieldEmail.clear();
+    fieldSenha.clear();
   }
 }
