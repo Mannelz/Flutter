@@ -3,18 +3,31 @@ import 'package:base_application/forms/routes.dart';
 import 'package:base_application/forms/validation.dart';
 import 'package:flutter/material.dart';
 
-class CadastroPage extends StatelessWidget 
+class CadastroPage extends StatefulWidget 
 {
-  CadastroPage({super.key});
+  const CadastroPage({super.key});
 
+  @override
+  State<CadastroPage> createState() => _CadastroPageState();
+}
+
+class _CadastroPageState extends State<CadastroPage> 
+{
   final _formKey = GlobalKey<FormState>();
+
   final Validation validar = Validation();
+
   final Pessoa usuario = Pessoa();
 
   final fieldNome = TextEditingController();
+
   final fieldSobrenome = TextEditingController();
+
   final fieldEmail = TextEditingController();
+
   final fieldSenha = TextEditingController(); 
+
+  bool passwordObscured = true;
 
   @override
   Widget build(BuildContext context) 
@@ -115,7 +128,7 @@ class CadastroPage extends StatelessWidget
                 (
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.number,
-                  obscureText: true,
+                  obscureText: passwordObscured,
                   controller: fieldSenha,
 
                   onFieldSubmitted: (value)
@@ -130,11 +143,19 @@ class CadastroPage extends StatelessWidget
                     usuario.senha = value;
                   },
 
-                  decoration: const InputDecoration
+                  decoration: InputDecoration
                   (
                     labelText: "Senha",
                     hintText: "Entre com sua senha",
-                    border: OutlineInputBorder(borderSide: BorderSide()), 
+                    border: const OutlineInputBorder(borderSide: BorderSide()),
+                    suffixIcon: IconButton
+                    (
+                      icon: Icon(passwordObscured ? Icons.visibility_off : Icons.visibility),
+                      onPressed: () 
+                      {
+                        setState(() => passwordObscured = !passwordObscured);
+                      },
+                    )
                   ),
                 ),
         
